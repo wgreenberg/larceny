@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_02_012810) do
+ActiveRecord::Schema.define(version: 2021_02_02_222954) do
 
   create_table "buy_orders", force: :cascade do |t|
     t.integer "player_id", null: false
@@ -65,6 +65,19 @@ ActiveRecord::Schema.define(version: 2021_02_02_012810) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_sell_orders_on_company_id"
     t.index ["player_id"], name: "index_sell_orders_on_player_id"
+  end
+
+  create_table "simulation_data", force: :cascade do |t|
+    t.integer "sim_time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "simulations", force: :cascade do |t|
+    t.integer "sim_time"
+    t.integer "generation"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "stock_prices", force: :cascade do |t|
