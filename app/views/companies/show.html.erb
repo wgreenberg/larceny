@@ -1,0 +1,10 @@
+<h1><%= @company.name %> - <%= @company.symbol %></h1>
+
+<h2>Price - <%= number_to_currency(@company.price) %></h2>
+
+<h2>Prices</h2>
+<ul>
+  <% @company.past_prices(10).each do |price| %>
+    <li><%= price.sim_time %> - <%= number_to_currency(price.price) %></li>
+  <% end %>
+</ul>
