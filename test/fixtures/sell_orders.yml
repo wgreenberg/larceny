@@ -1,13 +1,37 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+p1_a1:
   player: one
-  company: one
+  company: a
   sim_time: 1
+  quantity: 3
+
+p1_b1:
+  player: one
+  company: b
+  sim_time: 1
+  quantity: 5
+
+p2_a1:
+  player: two
+  company: a
+  sim_time: 1
+  quantity: 5
+
+p1_a2:
+  player: one
+  company: a
+  sim_time: 2
   quantity: 1
 
-two:
+p1_b2:
+  player: one
+  company: b
+  sim_time: 2
+  quantity: 2
+
+p2_b2:
   player: two
-  company: two
-  sim_time: 1
-  quantity: 1
+  company: b
+  sim_time: 2
+  quantity: 5

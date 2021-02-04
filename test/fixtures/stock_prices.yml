@@ -1,11 +1,26 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  company: one
-  price: 9.99
+a_1:
+  company: a
+  price: 1.00
   sim_time: 1
 
-two:
-  company: two
-  price: 9.99
+a_2:
+  company: a
+  price: 2.00
+  sim_time: 2
+
+a_3:
+  company: a
+  price: 3.00
+  sim_time: 3
+
+b_1:
+  company: b
+  price: 2.00
   sim_time: 1
+
+b_2:
+  company: b
+  price: 8.00
+  sim_time: 3
