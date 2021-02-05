@@ -25,12 +25,8 @@ namespace :simulation do
 
   desc "Update prices given the current buy/sell orders"
   task update_prices: :environment do
-    require 'simulation/price'
-    sim = Simulation.last
-    Company.find_each do |company|
-      update_price(company: company, sim_time: sim.sim_time)
-    end
-    sim.sim_time += 1
-    sim.save
+    t = Simulation.current_time
+    Company.find_each { |c| c.update_price(c.calculate_price(t)) }
+    Simulation.advance
   end
 end
