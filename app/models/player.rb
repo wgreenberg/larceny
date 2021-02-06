@@ -4,6 +4,8 @@ class Player < ApplicationRecord
   has_many :player_assets
   has_many :player_cashes
 
+  # TODO: validation that prevents players from submitting both buy and sell
+  # orders for the same stock at the same time
   def buy(company:, price:, sim_time:)
     order = buy_orders.find_or_create_by(sim_time: sim_time, company: company)
     order.price = price
@@ -20,20 +22,27 @@ class Player < ApplicationRecord
     cash_at Simulation.current_time
   end
 
-  def cash_at(t)
+  def cash_at t
     player_cashes.where("sim_time <= ?", t)
       .order(:sim_time)
       .last
       .amount
   end
 
-  def update_cash(amount)
+  def past_cash n
+    player_cashes.where("sim_time <= ?", Simulation.current_time)
+      .order(sim_time: :desc)
+      .limit(n)
+      .reverse
+  end
+
+  def update_cash amount
     cash = player_cashes.find_or_create_by(sim_time: Simulation.next_time)
     cash.amount = amount
     cash.save
   end
 
-  def stocks_for(company)
+  def stocks_for company
     asset = player_assets.where("sim_time <= ?", Simulation.current_time)
       .where(company: company)
       .order(:sim_time)

@@ -23,8 +23,13 @@ class CompanyTest < ActiveSupport::TestCase
       stock_prices(:a_2),
       stock_prices(:a_3),
     ]
-
     assert_equal (companies(:a).past_prices 1), [stock_prices(:a_3)]
+
+    companies(:b).update_price(50)
+    assert_equal (companies(:b).past_prices 5), [
+      stock_prices(:b_1),
+      stock_prices(:b_2)
+    ]
   end
 
   test "total_sells" do
@@ -43,12 +48,6 @@ class CompanyTest < ActiveSupport::TestCase
     assert_equal companies(:b).total_buys(sim_time: 1), 5
     assert_equal companies(:b).total_buys(sim_time: 2), 5
     assert_equal companies(:b).total_buys(sim_time: 3), 0
-  end
-
-  test "calculate_price" do
-    start_price = companies(:a).price_at 1
-    new_price = companies(:a).calculate_price 1
-    assert new_price > start_price
   end
 
   test "update_price" do

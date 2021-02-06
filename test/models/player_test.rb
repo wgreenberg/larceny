@@ -37,6 +37,14 @@ class PlayerTest < ActiveSupport::TestCase
     assert_equal players(:p1).cash, 200
   end
 
+  test "past_cash" do
+    players(:p1).update_cash 200
+    assert_equal players(:p1).past_cash(5).map(&:amount), [100]
+    Simulation.advance
+    assert_equal players(:p1).past_cash(5).map(&:amount), [100, 200]
+    assert_equal players(:p1).past_cash(1).map(&:amount), [200]
+  end
+
   test "get_assets" do
     assert_equal players(:p1).stocks_for(companies(:a)), 10
     assert_equal players(:p1).stocks_for(companies(:b)), 0
