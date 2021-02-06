@@ -25,8 +25,7 @@ class Company < ApplicationRecord
   end
 
   def update_price(new_price)
-    t_plus_1 = Simulation.next_time
-    next_price = stock_prices.find_or_create_by(sim_time: t_plus_1)
+    next_price = stock_prices.find_or_create_by(sim_time: Simulation.next_time)
     next_price.price = new_price
     next_price.save
   end
