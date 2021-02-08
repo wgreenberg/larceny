@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  description: MyString
+  sim_time: 1
+  duration: 1
+
+two:
+  description: MyString
+  sim_time: 1
+  duration: 1

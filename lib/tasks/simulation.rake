@@ -10,6 +10,8 @@ namespace :simulation do
     SellOrder.delete_all
     PlayerAsset.delete_all
     PlayerCash.delete_all
+    Effect.delete_all
+    Event.delete_all
     Company.delete_all
   end
 
@@ -20,8 +22,25 @@ namespace :simulation do
     companies = JSON.load open "config/init_companies.json"
     companies.each do |company|
       c = Company.create(name: company["name"], symbol: company["symbol"])
-      c.stock_prices.create(price: 0.0, sim_time: 1)
+      c.stock_prices.create(price: rand(0.10..0.90), sim_time: 1)
       c.save
+    end
+
+    companies = Company.all.map { |c| [c.symbol, c] }.to_h
+    events = JSON.load open "config/init_events.json"
+    events.each do |event|
+      db_event = Event.new
+      db_event.description = event['description']
+      db_event.sim_time = event['sim_time']
+      db_event.duration = event['duration']
+      db_event.save
+      effects = event['effects'].map do |effect|
+        {
+          :company => companies[effect['symbol']],
+          :value => effect['modifier'],
+        }
+      end
+      db_event.effects.create(effects)
     end
   end
 
@@ -44,6 +63,7 @@ namespace :simulation do
       quantity += (order.price / (order.company.price_at t+1)).to_i
       order.player.update_stock(order.company, quantity)
     end
+
     SellOrder.where(sim_time: t).find_each do |order|
       cash = order.player.cash
       cash += order.quantity * (order.company.price_at t+1)

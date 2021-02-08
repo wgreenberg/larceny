@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_02_222954) do
+ActiveRecord::Schema.define(version: 2021_02_08_010647) do
 
   create_table "buy_orders", force: :cascade do |t|
     t.integer "player_id", null: false
@@ -26,6 +26,24 @@ ActiveRecord::Schema.define(version: 2021_02_02_222954) do
   create_table "companies", force: :cascade do |t|
     t.string "name"
     t.string "symbol"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "effects", force: :cascade do |t|
+    t.integer "company_id", null: false
+    t.float "value"
+    t.integer "event_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_effects_on_company_id"
+    t.index ["event_id"], name: "index_effects_on_event_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "description"
+    t.integer "sim_time"
+    t.integer "duration"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -91,6 +109,8 @@ ActiveRecord::Schema.define(version: 2021_02_02_222954) do
 
   add_foreign_key "buy_orders", "companies"
   add_foreign_key "buy_orders", "players"
+  add_foreign_key "effects", "companies"
+  add_foreign_key "effects", "events"
   add_foreign_key "player_assets", "companies"
   add_foreign_key "player_assets", "players"
   add_foreign_key "player_cashes", "players"
