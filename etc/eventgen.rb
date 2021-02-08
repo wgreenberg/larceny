@@ -1,6 +1,10 @@
 require 'active_support/inflector'
 require 'json'
 
+N_EVENTS = 300
+SIM_TIME_LENGTH = 100
+MAX_DURATION = 5
+
 # from https://github.com/palmdalian/json_wordlist/
 words = JSON.parse(File.open('etc/wordlist_byPOS.json').read)
 words['noun'] = words['noun'].filter { |noun| noun[0] == noun[0].downcase }
@@ -25,7 +29,7 @@ forms = [
 
 events = []
 
-100.times do
+N_EVENTS.times do
   parts = forms.sample.map do |pos|
     if pos.class == Symbol then
       next Object.send(pos)
@@ -34,6 +38,8 @@ events = []
     end
   end
   n_effects = rand(0..companies.length)
+  sim_time = rand(1..SIM_TIME_LENGTH)
+  duration = rand(1..MAX_DURATION)
   effects = companies.shuffle[0..n_effects].map do |company|
     {
       :symbol => company['symbol'],
@@ -42,6 +48,8 @@ events = []
   end
   events.push({
     :description => parts.join(' '),
+    :sim_time => sim_time,
+    :duration => duration,
     :effects => effects,
   })
 end
