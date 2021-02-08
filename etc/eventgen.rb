@@ -1,7 +1,7 @@
 require 'active_support/inflector'
 require 'json'
 
-N_EVENTS = 300
+N_EVENTS = 200
 SIM_TIME_LENGTH = 100
 MAX_DURATION = 5
 
@@ -9,11 +9,11 @@ MAX_DURATION = 5
 words = JSON.parse(File.open('etc/wordlist_byPOS.json').read)
 words['noun'] = words['noun'].filter { |noun| noun[0] == noun[0].downcase }
 words.keys.each do |pos|
-  define_method :"#{pos}" do ||
+  define_method :"#{pos}" do
     words[pos].sample
   end
 
-  define_method :"#{pos}s" do ||
+  define_method :"#{pos}s" do
     words[pos].sample.pluralize
   end
 end
@@ -31,11 +31,8 @@ events = []
 
 N_EVENTS.times do
   parts = forms.sample.map do |pos|
-    if pos.class == Symbol then
-      next Object.send(pos)
-    else
-      next pos
-    end
+    next Object.send(pos) if pos.is_a? Symbol
+    next pos
   end
   n_effects = rand(0..companies.length)
   sim_time = rand(1..SIM_TIME_LENGTH)
